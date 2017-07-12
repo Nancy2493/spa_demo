@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>hash路由</title>
+   
+</head>
+
+<body>
+    <script type="text/javascript">
+    function Router(){ 
+        this.routes = {}; 
+        this.curUrl = ''; 
+     
+        this.route = function(path, callback){ 
+            this.routes[path] = callback || function(){}; 
+        }; 
+     
+        this.refresh = function(){ 
+            this.curUrl = location.hash.slice(1) || '/'; 
+            this.routes[this.curUrl](); 
+        }; 
+     
+        this.init = function(){ 
+            window.addEventListener('load', this.refresh.bind(this), false); 
+            window.addEventListener('hashchange', this.refresh.bind(this), false); 
+        } 
+    }
+    var R = new Router(); 
+    R.init();  
+    R.route('/', function() { 
+         document.getElementById('result').style.background = 'blue'; 
+         document.getElementById('result').innerHTML = '这是首页'; 
+     }); 
+     R.route('/product', function() { 
+        document.getElementById('result').style.background = 'orange'; 
+        document.getElementById('result').innerHTML = '这是产品页'; 
+     }); 
+     R.route('/server', function() { 
+        document.getElementById('result').style.background = 'red'; 
+        document.getElementById('result').innerHTML = '这是服务页'; 
+     });
+    </script>
+    <ul>  
+    <li><a href="#/">首页</a></li>  
+    <li><a href="#/product">产品</a></li>  
+    <li><a href="#/server">服务</a></li>  
+    </ul> 
+    <div id="result"></div>
+</body>
+
+</html>
